@@ -1,0 +1,73 @@
+---
+title       : Miles per Gallon Prediction
+subtitle    : Developing Data Products - Course Project, Shiny Application and Reproducible Pitch
+author      : Tamas Izsak
+job         : 
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : []            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+---
+
+## Fuel consumption / efficiency
+
+Most customers are very sensitive regarding the fuel consumption / efficiency of the new cars. Usually the reasons are:
+
+- rising fuel price
+- environmental awareness
+
+The car manufacturers working hard to predict and lowering the cars fuel consumption. There are lot of factors witch can effect the fuel efficiency (including but not limited to):
+
+- number of cylinders
+- gross horsepower
+- weight
+- engine displacement
+- rear axle ratio
+- transmission type
+
+--- .class #id 
+
+## Using the mtcars dataset
+
+The ```mtcars``` dataset can be used to build a model to show the effects of car 
+characteristics on fuel efficiency. 
+
+Dataset example:
+
+```{r, results='asis', echo=FALSE}
+data(mtcars);
+library(xtable)
+print(xtable(mtcars[1:8,]), type = "html")
+```
+
+--- .class #id 
+
+## Modelling predictor contribution
+
+Using a linear model, I determined the effect of gross horsepower, number of 
+cylinders, and weight on fuel efficiency (mpg), and used this model to create a
+function to predict fuel efficiency based on these factors.
+
+```{r}
+modelFit <- lm(mpg ~ hp + cyl + wt, data=mtcars)
+modelFit$coefficients
+
+mpg <- function(hp, cyl, wt) {
+    modelFit$coefficients[1] + modelFit$coefficients[2] * hp + 
+        modelFit$coefficients[3] * cyl + modelFit$coefficients[4] * wt
+}
+```
+
+--- .class #id
+
+## Miles per Gallon Prediction Shiny App
+
+The Miles per Gallon Prediction Shiny App is available here:
+
+https://tamasizsak.shinyapps.io/course_final/
+
+- The user can input predictor values in the left sidebar.
+- The fuel efficiency predictions shown in the main frame.
+- The plots below the main content show how MPG compares with data from the mtcars dataset.
